@@ -22,3 +22,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users', 'UserController@index')->name('users.index');
 Route::get('/user/profile/edit', 'UserController@profileShow')->name('user.profile');
 Route::patch('/user/profile', 'UserController@profileUpdate')->name('user.save');
+Route::delete('user/profile', 'UserController@destroy')->name('user.delete');

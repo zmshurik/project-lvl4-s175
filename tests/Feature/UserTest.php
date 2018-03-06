@@ -28,4 +28,11 @@ class UserTest extends TestCase
             'name' => 'newName'
         ]);
     }
+
+    public function testUserDelete()
+    {
+        $user = factory(\App\User::class)->make();
+        $saveResponse = $this->actingAs($user)->delete('/user/profile');
+        $this->assertDatabaseMissing('users', $user->toArray());
+    }
 }

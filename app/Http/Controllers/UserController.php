@@ -57,7 +57,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
-        flash('Profile was save successful')->success();
+        flash('Profile was saved successful')->success();
         return redirect()->route('user.profile');
     }
 
@@ -69,5 +69,8 @@ class UserController extends Controller
     public function destroy()
     {
         $user = Auth::user();
+        $user->delete();
+        flash('Your account was deleted successful')->error();
+        return redirect('/');
     }
 }
