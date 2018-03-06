@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -49,6 +50,15 @@ class UserController extends Controller
     public function profileUpdate(Request $request)
     {
         $user = Auth::user();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'string', 'email', 'max:255',  Rule::unique('users')->ignore($user->id)]
+        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+        flash('Profile was save successful')->success();
+        return redirect()->route('user.profile');
     }
 
     /**

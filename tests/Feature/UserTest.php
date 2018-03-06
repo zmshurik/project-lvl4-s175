@@ -23,7 +23,6 @@ class UserTest extends TestCase
         $user = factory(\App\User::class)->make();
         $getResponse = $this->actingAs($user)->get('/user/profile/edit');
         $getResponse->assertStatus(200);
-        $oldName = $user->name;
         $saveResponse = $this->actingAs($user)->patch('/user/profile', ['name' => 'newName', 'email' => $user->email]);
         $this->assertDatabaseHas('users', [
             'name' => 'newName'
