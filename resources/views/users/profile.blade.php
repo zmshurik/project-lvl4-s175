@@ -8,7 +8,7 @@
                 <div class="card-header">Profile settings</div>
 
                 <div class="card-body">
-                    @include('flash::message')
+                    <div class="text-center">@include('flash::message')</div>
                     <form action="{{ route('user.save') }}" method="POST">
                         {{ method_field('PATCH') }}
                         @csrf
@@ -39,7 +39,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div><a href="#">Change password</a></div>
+                        <div><a href="{{ route('user.changepwd')}}">Change password</a></div>
                         <div><button type="submit" class="btn btn-primary">Save changes</button></div>
                     </form>
                     <form action="/user/profile" method="post">
