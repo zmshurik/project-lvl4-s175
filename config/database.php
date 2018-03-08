@@ -1,5 +1,7 @@
 <?php
 
+$herokuUrl = parse_url(env('DATABASE_URL', 'http://username:password@hostname:9090/path?arg=value#anchor'));
+
 return [
 
     /*
@@ -37,6 +39,19 @@ return [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
+        ],
+
+        'heroku' => [
+            'driver' => 'pgsql',
+            'host' => $herokuUrl['host'],
+            'port' => $herokuUrl['port'],
+            'database' => substr($herokuUrl['path'], 1),
+            'username' => $herokuUrl['user'],
+            'password' => $herokuUrl['pass'],
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
         ],
 
         'mysql' => [
