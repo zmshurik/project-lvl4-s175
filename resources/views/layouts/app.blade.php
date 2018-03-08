@@ -28,8 +28,8 @@
                     <!-- Left Side Of Navbar -->
                     @auth
                     <ul class="navbar-nav mr-auto">
-                        <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                        <li><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
+                        <li><a class="nav-link @yield('home')" href="{{ route('home') }}">Home</a></li>
+                        <li><a class="nav-link @yield('users')" href="{{ route('users.index') }}">Users</a></li>
                     </ul>
                     @endauth
 

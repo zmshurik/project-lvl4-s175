@@ -44,16 +44,12 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="new-password_confirmation">
+                                <input id="password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Change
-                                </button>
-                            </div>
+                        <div class="form-group d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Change</button>
                         </div>
                     </form>
                 </div>

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('users', 'active')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -9,9 +11,9 @@
 
                 <div class="card-body">
                     @csrf
-                    <ul>
+                    <ul class="list-group text-center">
                         @foreach ($users as $user)
-                            <li>{{ $user->name }}</li>
+                            <li class="list-group-item">{{ $user->name }}</li>
                         @endforeach
                         <div class="d-flex justify-content-center">{{ $users->links() }}</div>
                     </ul>
