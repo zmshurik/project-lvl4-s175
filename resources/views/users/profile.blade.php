@@ -37,7 +37,7 @@
                         <div class="mb-3"><a class="btn btn-info" href="{{ route('user.changepwd')}}">Change password</a></div>
                         <div class="d-flex justify-content-center"><button type="submit" class="btn btn-success">Save changes</button></div>
                     </form>
-                    <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post" data-confirm="Are you sure you want to submit?">
+                    <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post" data-confirm="Are you sure you want to delete your account?">
                         @method('DELETE')
                         @csrf
 
