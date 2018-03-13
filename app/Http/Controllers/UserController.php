@@ -36,9 +36,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function profileShow()
+    public function edit($id)
     {
         $user = Auth::user();
+        if ($user->id != User::find($id)->id) {
+            redirect()->route('users.edit', ['id' => $user->id]);
+        }
         return view('users.profile', ['user' => $user]);
     }
 
@@ -48,7 +51,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function profileUpdate(Request $request)
+    public function update(Request $request, $id)
     {
         $user = Auth::user();
         $request->validate([
@@ -59,7 +62,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->save();
         flash('Changes saved successfuly')->success();
-        return redirect()->route('user.profile');
+        return redirect()->route('users.edit', ['id' => $user->id]);
     }
 
     /**
@@ -67,7 +70,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy($id)
     {
         $user = Auth::user();
         $user->delete();
@@ -93,7 +96,7 @@ class UserController extends Controller
             flash('The password is incorrect')->error();
             return redirect()->back();
         }
-        
+
         $user->password = bcrypt($request->get('new-password'));
         $user->save();
         flash('Password changed successfully !')->success();

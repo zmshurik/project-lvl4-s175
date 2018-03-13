@@ -14,16 +14,19 @@ class UserTest extends TestCase
     public function testUserIndex()
     {
         $user = factory(\App\User::class)->make();
-        $response = $this->actingAs($user)->get('/users');
+        $url = route('users.index');
+        $response = $this->actingAs($user)->get($url);
         $response->assertStatus(200);
     }
 
     public function testUserProfile()
     {
-        $user = factory(\App\User::class)->make();
-        $getResponse = $this->actingAs($user)->get('/user/profile/edit');
+        $user = factory(\App\User::class)->create();
+        $url1 = route('users.edit', ['id' => $user->id]);
+        $getResponse = $this->actingAs($user)->get($url1);
         $getResponse->assertStatus(200);
-        $saveResponse = $this->actingAs($user)->patch('/user/profile', ['name' => 'newName', 'email' => $user->email]);
+        $url2 = route('users.update', ['id' => $user->id]);
+        $saveResponse = $this->actingAs($user)->patch($url2, ['name' => 'newName', 'email' => $user->email]);
         $this->assertDatabaseHas('users', [
             'name' => 'newName'
         ]);

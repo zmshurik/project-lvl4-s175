@@ -21,9 +21,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/users', 'UserController@index')->name('users.index');
-Route::get('/user/profile/edit', 'UserController@profileShow')->name('user.profile');
-Route::patch('/user/profile', 'UserController@profileUpdate')->name('user.save');
-Route::delete('user/profile', 'UserController@destroy')->name('user.delete');
+Route::resource('users', 'UserController', ['except' => [
+    'create', 'store', 'show'
+]]);
+// Route::get('/users', 'UserController@index')->name('users.index');
+// Route::get('/user/profile/edit', 'UserController@profileShow')->name('user.profile');
+// Route::patch('/user/profile', 'UserController@profileUpdate')->name('user.save');
+// Route::delete('user/profile', 'UserController@destroy')->name('user.delete');
 Route::get('user/profile/changepwd', 'UserController@changePwdShow')->name('user.changepwd');
 Route::patch('user/profile/changepwd', 'UserController@changePwdStore')->name('user.storepwd');
