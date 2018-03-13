@@ -7,6 +7,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-param" content="_token" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -46,16 +47,15 @@
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('user.profile') }}">Profile</a>
+                                    <a class="dropdown-item" href="{{ route('users.edit', ['id' => Auth::user()->id]) }}">Profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                        data-method="post" rel="nofollow">
                                         Logout
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <!-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
-                                    </form>
+                                    </form> -->
                                 </div>
                             </li>
                         @endguest
@@ -71,5 +71,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/jquery-ujs.js') }}"></script>
 </body>
 </html>
