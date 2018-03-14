@@ -67,6 +67,5 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/jquery-ujs.js') }}"></script>
 </body>
 </html>
