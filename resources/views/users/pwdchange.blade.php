@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                 <div class="text-center">@include('flash::message')</div>
-                    <form method="POST" action="{{ route('user.storepwd') }}">
+                    <form method="POST" action="{{ route('users.storepwd') }}">
                         @csrf
                         {{ method_field('PATCH') }}
                         <div class="form-group row">

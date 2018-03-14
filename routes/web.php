@@ -24,5 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UserController', ['except' => [
     'create', 'store', 'show'
 ]]);
-Route::get('user/profile/changepwd', 'UserController@changePwdShow')->name('user.changepwd');
-Route::patch('user/profile/changepwd', 'UserController@changePwdStore')->name('user.storepwd');
+Route::get('user/profile/changepwd', 'UserController@changePwdShow')->name('users.changepwd');
+Route::patch('user/profile/changepwd', 'UserController@changePwdStore')->name('users.storepwd');
