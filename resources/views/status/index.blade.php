@@ -18,6 +18,11 @@
                         <div class="input-group-append">
                             <button class="btn btn-outline-success" type="submit">Add</button>
                         </div>
+                        @if ($errors->has('statusName'))
+                        <span class="invalid-feedback">
+                            <strong>{{ $errors->first('statusName') }}</strong>
+                        </span>
+                    @endif
                     </div>
                     </form>
                     @if ($errors->has('statusName'))
