@@ -31,8 +31,9 @@
                                 {{ $taskStatus->name }}
                                 @if($taskStatus->id != 1)
                                 <span>
-                                    <a class="btn btn-outline-info btn-sm" href="#">edit</a>
-                                    <a class="btn btn-danger btn-sm" href="#">delete</a>
+                                    <a class="btn btn-outline-info btn-sm" href="{{ route('taskStatuses.edit', ['id' => $taskStatus->id]) }}">edit</a>                                    
+                                    <a class="btn btn-danger btn-sm" data-confirm="Are you sure?" data-method="delete" 
+                                    rel="nofollow" href="{{ route('taskStatuses.destroy', ['id' => $taskStatus->id]) }}">delete</a>
                                 </span>
                                 @endif
                             </li>

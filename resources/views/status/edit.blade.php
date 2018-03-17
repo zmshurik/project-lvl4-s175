@@ -9,10 +9,10 @@
             <div class="card">
                 <div class="card-header">Task statuses</div>
 
-                <div class="card-body">                    
-                    <form action=" {{ route('taskStatuses.store') }}" method="post">
+                <div class="card-body">
+                    <form action=" {{ route('taskStatuses.update', ['id' => $taskStatus->id]) }}" method="post">
                     @csrf
-                    $metod('PATCH')
+                    @method('PATCH')
                     <div class="input-group mb-3">
                         <input type="text" class="form-control{{ $errors->has('statusName') ? ' is-invalid' : '' }}" value="{{ $taskStatus->name }}" name="statusName" required>
                         <div class="input-group-append">
