@@ -32,7 +32,7 @@ class TaskStatusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'statusName' => 'required|string|max:50|unique:task_statuses'
+            'statusName' => 'required|string|max:50|unique:task_statuses,name'
         ]);
         TaskStatus::create(['name' => $request->statusName]);
         flash('Task status added successfuly!')->success();
@@ -69,7 +69,7 @@ class TaskStatusController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'statusName' => 'required|string|max:50|unique:task_statuses'
+            'statusName' => 'required|string|max:50|unique:task_statuses,name'
         ]);
         try {
             $status = TaskStatus::findOrFail($id);
@@ -78,12 +78,12 @@ class TaskStatusController extends Controller
         }
         if ($id == 1) {
             flash("You can't edit this status")->error();
-            return redirect()->back();
+            return redirect()->route('taskStatuses.index');
         }
         $status->name = $request->statusName;
         $status->save();
         flash('Task status changed successfuly!')->success();
-        return redirect()->back();
+        return redirect()->route('taskStatuses.index');
     }
 
     /**
