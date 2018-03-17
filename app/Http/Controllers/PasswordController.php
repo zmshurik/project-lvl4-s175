@@ -48,13 +48,13 @@ class PasswordController extends Controller
         $user = Auth::user();
 
         if (!(Hash::check($request->get('current-password'), $user->password))) {
-            flash('The password is incorrect')->error();
+            flash('The password is incorrect')->error()->important();
             return redirect()->back();
         }
 
         $user->password = bcrypt($request->get('new-password'));
         $user->save();
-        flash('Password changed successfully !')->success();
+        flash('Password changed successfully !')->success()->important();
 
         return redirect()->back();
     }

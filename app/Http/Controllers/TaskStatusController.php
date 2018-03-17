@@ -35,7 +35,7 @@ class TaskStatusController extends Controller
             'statusName' => 'required|string|max:50|unique:task_statuses,name'
         ]);
         TaskStatus::create(['name' => $request->statusName]);
-        flash('Task status added successfuly!')->success();
+        flash('Task status added successfuly!')->success()->important();
         return redirect()->back();
     }
 
@@ -53,7 +53,7 @@ class TaskStatusController extends Controller
             return redirect()->withStatus(404);
         }
         if ($id == 1) {
-            flash("You can't edit this status")->error();
+            flash("You can't edit this status")->error()->important();
             return redirect()->back();
         }
         return view('status.edit', ['taskStatus' => $status]);
@@ -77,11 +77,11 @@ class TaskStatusController extends Controller
             return redirect()->withStatus(404);
         }
         if ($id == 1) {
-            flash("You can't edit this status")->error();
+            flash("You can't edit this status")->error()->important();
         } else {
             $status->name = $request->statusName;
             $status->save();
-            flash('Task status changed successfuly!')->success();
+            flash('Task status changed successfuly!')->success()->important();
         }
         return redirect()->route('taskStatuses.index');
     }
@@ -100,10 +100,10 @@ class TaskStatusController extends Controller
             return redirect()->withStatus(404);
         }
         if ($id == 1) {
-            flash("You can't delete this status")->error();
+            flash("You can't delete this status")->error()->important();
         } else {
             $status->delete();
-            flash("Task status deleted successfuly")->warning();
+            flash("Task status deleted successfuly")->warning()->important();
         }
         return redirect()->back();
     }

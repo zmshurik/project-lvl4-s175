@@ -61,7 +61,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
-        flash('Changes saved successfuly')->success();
+        flash('Changes saved successfuly')->success()->important();
         return redirect()->route('users.edit', ['id' => $user->id]);
     }
 
@@ -74,7 +74,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user->delete();
-        flash('Your account deleted successfuly')->error();
+        flash('Your account deleted successfuly')->error()->important();
         return redirect('/');
     }
 }
