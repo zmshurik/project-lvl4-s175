@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
@@ -25,8 +26,9 @@ class UserTest extends TestCase
         $url1 = route('users.edit', ['id' => $user->id]);
         $getResponse = $this->actingAs($user)->get($url1);
         $getResponse->assertStatus(200);
-        $url2 = route('users.update', ['id' => $user->id]);
-        $saveResponse = $this->actingAs($user)->patch($url2, ['name' => 'newName', 'email' => $user->email]);
+        $patchUrl = route('users.update', ['id' => $user->id]);
+        $patchResponse = $this->actingAs($user)->patch($patchUrl, ['name' => 'newName', 'email' => $user->email]);
+        $patchResponse->assertStatus(302);
         $this->assertDatabaseHas('users', [
             'name' => 'newName'
         ]);
@@ -36,7 +38,29 @@ class UserTest extends TestCase
     {
         $user = factory(\App\User::class)->create();
         $url = route('users.destroy', ['id' => $user->id]);
-        $saveResponse = $this->actingAs($user)->delete($url);
+        $response = $this->actingAs($user)->delete($url);
+        $response->assertStatus(302);
         $this->assertDatabaseMissing('users', $user->toArray());
+    }
+
+    public function testPassword()
+    {
+        $user = factory(\App\User::class)->create([
+            'password' => 'myOldPwd'
+        ]);
+        // $this->assertTrue(Hash::check('myOldPwd', $user->password));
+        $url = route('password.index');
+        $getResponse = $this->actingAs($user)->get($url);
+        $getResponse->assertStatus(200);
+        $newPwd = 'myNewPwd';
+        $postUrl = route('password.store');
+        $postResponse = $this->actingAs($user)->post($postUrl, [
+            'current-password' => 'myOldPwd',
+            'new-password' => $newPwd,
+            'new-password_confirmation' => $newPwd
+        ]);
+        $postResponse->assertSessionMissing('errors');
+        $postResponse->assertStatus(302);
+        // $this->assertTrue(Hash::check($user->password, $newPwd));
     }
 }

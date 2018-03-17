@@ -9,9 +9,8 @@
 
                 <div class="card-body">
                 <div class="text-center">@include('flash::message')</div>
-                    <form method="POST" action="{{ route('users.storepwd') }}">
+                    <form method="POST" action="{{ route('password.store') }}">
                         @csrf
-                        {{ method_field('PATCH') }}
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">Current password</label>
 

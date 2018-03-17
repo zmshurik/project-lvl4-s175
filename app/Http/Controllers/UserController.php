@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         if ($user->id != User::find($id)->id) {
-            redirect()->route('users.edit', ['id' => $user->id]);
+            return redirect()->route('users.edit', ['id' => $user->id]);
         }
         return view('users.profile', ['user' => $user]);
     }
@@ -76,31 +76,5 @@ class UserController extends Controller
         $user->delete();
         flash('Your account deleted successfuly')->error();
         return redirect('/');
-    }
-
-    public function changePwdShow()
-    {
-        return view('users.pwdchange');
-    }
-
-    public function changePwdStore(Request $request)
-    {
-        $request->validate([
-            'current-password' => 'required',
-            'new-password' => 'required|string|min:6|different:current-password|confirmed',
-        ]);
-
-        $user = Auth::user();
-
-        if (!(Hash::check($request->get('current-password'), $user->password))) {
-            flash('The password is incorrect')->error();
-            return redirect()->back();
-        }
-
-        $user->password = bcrypt($request->get('new-password'));
-        $user->save();
-        flash('Password changed successfully !')->success();
-
-        return redirect()->back();
     }
 }

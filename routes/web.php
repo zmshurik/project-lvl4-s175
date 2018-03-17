@@ -24,5 +24,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('users', 'UserController', ['except' => [
     'create', 'store', 'show'
 ]]);
-Route::get('user/profile/changepwd', 'UserController@changePwdShow')->name('users.changepwd');
-Route::patch('user/profile/changepwd', 'UserController@changePwdStore')->name('users.storepwd');
+Route::prefix('user/account')->group(function () {
+    Route::resource('password', 'PasswordController', ['only' => [
+        'index', 'store'
+    ]]);
+});
+
+// Route::get('user/profile/changepwd', 'UserController@changePwdShow')->name('users.changepwd');
+// Route::patch('user/profile/changepwd', 'UserController@changePwdStore')->name('users.storepwd');
