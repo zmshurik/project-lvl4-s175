@@ -46,9 +46,8 @@ class UserTest extends TestCase
     public function testPassword()
     {
         $user = factory(\App\User::class)->create([
-            'password' => 'myOldPwd'
+            'password' => bcrypt('myOldPwd')
         ]);
-        // $this->assertTrue(Hash::check('myOldPwd', $user->password));
         $url = route('password.index');
         $getResponse = $this->actingAs($user)->get($url);
         $getResponse->assertStatus(200);
@@ -59,8 +58,7 @@ class UserTest extends TestCase
             'new-password' => $newPwd,
             'new-password_confirmation' => $newPwd
         ]);
-        $postResponse->assertSessionMissing('errors');
         $postResponse->assertStatus(302);
-        // $this->assertTrue(Hash::check($user->password, $newPwd));
+        $this->assertTrue(Hash::check($newPwd, $user->password));
     }
 }
