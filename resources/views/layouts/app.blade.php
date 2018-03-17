@@ -31,6 +31,7 @@
                     <ul class="navbar-nav mr-auto">
                         <li><a class="nav-link @yield('home')" href="{{ route('home') }}">Home</a></li>
                         <li><a class="nav-link @yield('users')" href="{{ route('users.index') }}">Users</a></li>
+                        <li><a class="nav-link @yield('status')" href="{{ route('taskStatuses.index') }}">TaskStatuses</a></li>
                     </ul>
                     @endauth
 

@@ -30,5 +30,6 @@ Route::prefix('user/account')->group(function () {
     ]]);
 });
 
-// Route::get('user/profile/changepwd', 'UserController@changePwdShow')->name('users.changepwd');
-// Route::patch('user/profile/changepwd', 'UserController@changePwdStore')->name('users.storepwd');
+Route::resource('taskStatuses', 'TaskStatusController', ['except' => [
+    'create', 'show'
+]]);
