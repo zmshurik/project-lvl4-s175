@@ -19,17 +19,7 @@ class TaskStatusController extends Controller
     public function index()
     {
         $statuses = TaskStatus::paginate(10);
-        return view('status.taskStatus', ['taskStatuses' => $statuses]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('status.index', ['taskStatuses' => $statuses]);
     }
 
     /**
@@ -40,18 +30,14 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $request->validate([
+            'statusName' => 'required|string|max:50|unique:task_statuses'
+        ]);
+        $status = new TaskStatus();
+        $status->name = $request->statusName;
+        $status->save();
+        flash('Task status added successfuly!')->success();
+        return redirect()->back();
     }
 
     /**

@@ -10,15 +10,31 @@
                 <div class="card-header">Task statuses</div>
 
                 <div class="card-body">
-                    <form action="taskStatuses.store" method="post"></form>
+                    <div class="text-center">@include('flash::message')</div>
+                    <form action=" {{ route('taskStatuses.store') }}" method="post">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control{{ $errors->has('statusName') ? ' is-invalid' : '' }}" placeholder="Enter new task status" name="statusName" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success" type="submit">Add</button>
+                        </div>
+                    </div>
+                    </form>
+                    @if ($errors->has('statusName'))
+                        <span class="invalid-feedback">
+                            <strong>{{ $errors->first('statusName') }}</strong>
+                        </span>
+                    @endif
                     <ul class="list-group">
                         @foreach ($taskStatuses as $taskStatus)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ $taskStatus->name }} 
+                                {{ $taskStatus->name }}
+                                @if($taskStatus->id != 1)
                                 <span>
                                     <a class="btn btn-outline-info btn-sm" href="#">edit</a>
                                     <a class="btn btn-danger btn-sm" href="#">delete</a>
                                 </span>
+                                @endif
                             </li>
                         @endforeach
                         <div class="d-flex justify-content-center">{{ $taskStatuses->links() }}</div>
