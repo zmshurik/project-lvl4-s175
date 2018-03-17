@@ -14,7 +14,8 @@
                     <form action=" {{ route('taskStatuses.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control{{ $errors->has('statusName') ? ' is-invalid' : '' }}" placeholder="Enter new task status" name="statusName" required>
+                        <input type="text" class="form-control{{ $errors->has('statusName') ? ' is-invalid' : '' }}"
+                             placeholder="Enter new task status" name="statusName" value="{{ old('statusName') }}" required>
                         <div class="input-group-append">
                             <button class="btn btn-outline-success" type="submit">Add</button>
                         </div>
