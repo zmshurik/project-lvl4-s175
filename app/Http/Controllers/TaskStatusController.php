@@ -78,11 +78,11 @@ class TaskStatusController extends Controller
         }
         if ($id == 1) {
             flash("You can't edit this status")->error();
-            return redirect()->route('taskStatuses.index');
+        } else {
+            $status->name = $request->statusName;
+            $status->save();
+            flash('Task status changed successfuly!')->success();
         }
-        $status->name = $request->statusName;
-        $status->save();
-        flash('Task status changed successfuly!')->success();
         return redirect()->route('taskStatuses.index');
     }
 
@@ -101,10 +101,10 @@ class TaskStatusController extends Controller
         }
         if ($id == 1) {
             flash("You can't delete this status")->error();
-            return redirect()->back();
+        } else {
+            $status->delete();
+            flash("Task status deleted successfuly")->warning();
         }
-        $status->delete();
-        flash("Task status deleted successfuly")->warning();
         return redirect()->back();
     }
 }
