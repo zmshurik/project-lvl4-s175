@@ -29,4 +29,13 @@ class TaskTest extends TestCase
         $response = $this->actingAs($user)->get($url);
         $response->assertStatus(200);
     }
+
+    public function testEdit()
+    {
+        $user = factory(\App\User::class)->make();
+        $tasks = factory(\App\Task::class, 3)->create();
+        $url = route('tasks.edit', ['id' => $tasks->first()]);
+        $response = $this->actingAs($user)->get($url);
+        $response->assertStatus(200);
+    }
 }

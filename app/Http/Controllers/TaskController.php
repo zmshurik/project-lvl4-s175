@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 use App\User;
+use App\TaskStatus;
 
 class TaskController extends Controller
 {
@@ -46,17 +47,6 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -64,7 +54,12 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $task = Task::findOrFail($id);
+        } catch (Exception $e) {
+            return redirect()->withStatus(404);
+        }
+        return view('tasks.edit', ['task' => $task, 'users' => User::all(), 'statuses' => TaskStatus::all()]);
     }
 
     /**
