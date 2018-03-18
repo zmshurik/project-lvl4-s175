@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Task statuses</div>
+                <div class="card-header">Change status</div>
 
                 <div class="card-body">
                     <form action=" {{ route('taskStatuses.update', ['id' => $taskStatus->id]) }}" method="post">
