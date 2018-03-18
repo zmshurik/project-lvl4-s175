@@ -33,6 +33,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Creator</th>
                                 <th scope="col">Assigned to</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -42,6 +43,7 @@
                                     <td>{{ $task->name }}</td>
                                     <td>{{ $task->creator->name }}</td>
                                     <td>{{ $task->assignedTo->name }}</td>
+                                    <td>{{ $task->status->name }}</td>
                                     <td>
                                         <span class="d-flex justify-content-end">
                                             <a class="btn btn-outline-info btn-sm" href="{{ route('tasks.edit', ['id' => $task->id]) }}">show</a>
