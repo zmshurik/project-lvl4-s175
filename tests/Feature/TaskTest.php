@@ -8,13 +8,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TaskTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testExample()
+    public function testIndex()
     {
-        $this->assertTrue(true);
+        $user = factory(\App\User::class)->make();
+        factory(\App\Task::class, 3)->make();
+        $url = route('tasks.index');
+        $response = $this->actingAs($user)->get($url);
+        $response->assertStatus(200);
     }
 }

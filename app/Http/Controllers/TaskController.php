@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +18,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::paginate(10);
+        return view('tasks.index', ['tasks' => $tasks]);
     }
 
     /**
