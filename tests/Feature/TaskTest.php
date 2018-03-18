@@ -22,4 +22,11 @@ class TaskTest extends TestCase
         $response = $this->actingAs($user)->get($url);
         $response->assertStatus(200);
     }
+    public function testCreate()
+    {
+        $user = factory(\App\User::class)->make();
+        $url = route('tasks.create');
+        $response = $this->actingAs($user)->get($url);
+        $response->assertStatus(200);
+    }
 }
