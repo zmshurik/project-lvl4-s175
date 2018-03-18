@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Tasks</div>
+                <div class="card-header">Create new task</div>
 
                 <div class="card-body">
                     <form action="{{ route('tasks.store') }}" method="post">
