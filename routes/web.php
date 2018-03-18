@@ -33,3 +33,5 @@ Route::prefix('user/account')->group(function () {
 Route::resource('taskStatuses', 'TaskStatusController', ['except' => [
     'create', 'show'
 ]]);
+
+Rute::resource('tasks', 'TaskController', ['except' => ['show']]);
