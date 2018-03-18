@@ -10,8 +10,8 @@ class TaskStatus extends Model
         'name'
     ];
 
-    public function task()
+    public function tasks()
     {
-        return $this->hasMany('App\Task');
+        return $this->hasMany('App\Task', 'status_id');
     }
 }

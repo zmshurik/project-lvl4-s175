@@ -27,12 +27,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function createdTask()
+    public function createdTasks()
     {
         return $this->hasMany('App\Task', 'creator_id');
     }
 
-    public function assignedTask()
+    public function assignedTasks()
     {
         return $this->hasMany('App\Task', 'assigned_to_id');
     }
