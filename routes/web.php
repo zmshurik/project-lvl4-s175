@@ -34,4 +34,4 @@ Route::resource('taskStatuses', 'TaskStatusController', ['except' => [
     'create', 'show'
 ]]);
 
-Rute::resource('tasks', 'TaskController', ['except' => ['show']]);
+Route::resource('tasks', 'TaskController', ['except' => ['show']]);
