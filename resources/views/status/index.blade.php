@@ -26,19 +26,14 @@
                     @endif
                     </div>
                     </form>
-                    @if ($errors->has('statusName'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('statusName') }}</strong>
-                        </span>
-                    @endif
                     <ul class="list-group">
                         @foreach ($taskStatuses as $taskStatus)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {{ $taskStatus->name }}
                                 @if($taskStatus->id != 1)
                                 <span>
-                                    <a class="btn btn-outline-info btn-sm" href="{{ route('taskStatuses.edit', ['id' => $taskStatus->id]) }}">edit</a>                                    
-                                    <a class="btn btn-danger btn-sm" data-confirm="Are you sure?" data-method="delete" 
+                                    <a class="btn btn-outline-info btn-sm" href="{{ route('taskStatuses.edit', ['id' => $taskStatus->id]) }}">edit</a>
+                                    <a class="btn btn-danger btn-sm" data-confirm="Are you sure?" data-method="delete"
                                     rel="nofollow" href="{{ route('taskStatuses.destroy', ['id' => $taskStatus->id]) }}">delete</a>
                                 </span>
                                 @endif
