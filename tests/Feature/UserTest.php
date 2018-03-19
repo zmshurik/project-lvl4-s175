@@ -40,7 +40,7 @@ class UserTest extends TestCase
         $url = route('users.destroy', ['id' => $user->id]);
         $response = $this->actingAs($user)->delete($url);
         $response->assertStatus(302);
-        $this->assertDatabaseMissing('users', $user->toArray());
+        $this->assertTrue($user->trashed());
     }
 
     public function testPassword()
