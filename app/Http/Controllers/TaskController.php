@@ -7,6 +7,7 @@ use App\Task;
 use App\User;
 use App\TaskStatus;
 use Illuminate\Support\Facades\Auth;
+use App\Tag;
 
 class TaskController extends Controller
 {
@@ -14,6 +15,32 @@ class TaskController extends Controller
     {
         $this->middleware('auth');
     }
+    /**
+     * Return array of tags ids from given string
+     *
+     * @param  string  $tagsStr
+     * @return Array
+     */
+    private function getTagsIdsFromStr($tagsStr)
+    {
+        $tagNames = collect(explode(',', $tagsStr));
+        return $tagNames->map(function ($tag, $key) {
+            $trimed = trim($tag);
+            return Tag::firstOrCreate(['name' => $trimed])->id;
+        })->unique()->all();
+    }
+
+    /**
+     * Return return parameter of empty string if parameter is null
+     *
+     * @param  string  $tagsStr
+     * @return string
+     */
+    private function getValidTagsStr($fieldContent)
+    {
+        return is_null($fieldContent) ? '' : $fieldContent;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -47,6 +74,8 @@ class TaskController extends Controller
         $request->validate([
             'name' => 'required|max:60'
         ]);
+        $tagsStr = $this->getValidTagsStr($request->tagsStr);
+        $tagsIds = $this->getTagsIdsFromStr($tagsStr);
         $task = new Task();
         $task->name = $request->name;
         $task->description = $request->description;
@@ -54,6 +83,7 @@ class TaskController extends Controller
         $task->creator()->associate(Auth::user());
         $task->assignedTo()->associate(User::find($request->assignedToId));
         $task->save();
+        $task->tags()->attach($tagsIds);
         flash('Task created successfuly')->success()->important();
         return redirect()->route('tasks.index');
     }
@@ -87,6 +117,8 @@ class TaskController extends Controller
             'name' => 'required|max:60'
         ]);
         $assignedUser = User::withTrashed()->find($request->assignedToId);
+        $tagsStr = $this->getValidTagsStr($request->tagsStr);
+        $tagsIds = $this->getTagsIdsFromStr($tagsStr);
         if ($assignedUser->trashed()) {
             flash('User, on which assigned task, deleted. Please choose another one!')->error();
         } else {
@@ -100,6 +132,7 @@ class TaskController extends Controller
             $task->status()->associate(TaskStatus::find($request->statusId));
             $task->assignedTo()->associate($assignedUser);
             $task->save();
+            $task->tags()->sync($tagsIds);
             flash('Task changed successfuly')->success()->important();
         }
         return redirect()->back();
@@ -118,6 +151,7 @@ class TaskController extends Controller
         } catch (Exception $e) {
             return redirect()->withStatus(404);
         }
+        $task->tags()->detach();
         $task->delete();
         flash('Task deleted successfuly')->success()->important();
         return redirect()->route('tasks.index');
