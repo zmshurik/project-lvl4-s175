@@ -60,4 +60,18 @@ class TaskStatusTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseMissing('task_statuses', ['name' => 'for deletion']);
     }
+
+    public function testShouldNotDeleteWithTasks()
+    {
+        $user = factory(\App\User::class)->create();
+        $status = factory(\App\TaskStatus::class)->create(['name' => "DON'T DELETE"]);
+        $task = factory(\App\Task::class)->create([
+            'name' => 'myTask',
+            'status_id' => $status->id
+        ]);
+        $url = route('taskStatuses.destroy', ['id' => $status->id]);
+        $response = $this->actingAs($user)->delete($url);
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('task_statuses', ['name' => "DON'T DELETE"]);
+    }
 }

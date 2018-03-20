@@ -101,8 +101,9 @@ class TaskStatusController extends Controller
         } catch (Exception $e) {
             return redirect()->withStatus(404);
         }
-        if ($id == self::NEW_STATUS_ID) {
+        if ($id == self::NEW_STATUS_ID || $status->tasks->isNotEmpty()) {
             flash("You can't delete this status")->error()->important();
+            flash("This status has tasks. Plese change all of it before delete.")->warning()->important();
         } else {
             $status->delete();
             flash("Task status deleted successfuly")->success()->important();
