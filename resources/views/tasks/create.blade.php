@@ -24,8 +24,14 @@
                             @endif
                         </div>
                         <label for="description">Description:</label>
-                        <div class="input-group mb-1">
+                        <div class="input-group mb-3">
                             <textarea id="description" class="form-control" name="description">{{ old('description') }}</textarea>
+                        </div>
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tags</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="please enter tags devided by ','" name="tagsStr" value="{{ old('tagsStr') }}">
                         </div>
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">

@@ -45,11 +45,7 @@
                                     <td>{{ $task->creator->name }}</td>
                                     <td>{{ $task->assignedTo->name }}</td>
                                     <td>{{ $task->status->name }}</td>
-                                    <td>
-                                        @foreach ($task->tags as $tag)
-                                            {{ $tag->name }} {{ (! $loop->last) ? ',' : '' }}
-                                        @endforeach
-                                    </td>
+                                    <td>{{ $task->tags->pluck('name')->implode(', ') }}</td>
                                     <td>
                                         <span class="d-flex justify-content-end">
                                             <a class="btn btn-outline-info btn-sm" href="{{ route('tasks.edit', ['id' => $task->id]) }}">show</a>

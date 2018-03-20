@@ -31,6 +31,12 @@
                         </div>
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
+                                <span class="input-group-text">Tags</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="please enter tags devided by ','" name="tagsStr" value="{{ $task->tags->pluck('name')->implode(', ') }}">
+                        </div>
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
                                 <label class="input-group-text" for="Creator">Creator</label>
                             </div>
                             <input class="form-control bg-white" type="text" id="Creator" value="{{ $task->creator->name }}" readonly disabled>
@@ -64,7 +70,7 @@
                           </select>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-outline-success">Change task</button>                            
+                            <button type="submit" class="btn btn-outline-success">Change task</button>
                         </div>
                         <div class="d-flex justify-content-end">
                             <a class="btn btn-danger" data-confirm="Are you sure?" data-method="delete"
