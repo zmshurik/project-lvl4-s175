@@ -10,13 +10,12 @@
                 <div class="card-header">Users</div>
 
                 <div class="card-body">
-                    @csrf
                     <ul class="list-group text-center">
                         @foreach ($users as $user)
                             <li class="list-group-item">{{ $user->name }}</li>
                         @endforeach
-                        <div class="d-flex justify-content-center">{{ $users->links() }}</div>
                     </ul>
+                    <div class="d-flex justify-content-center">{{ $users->links() }}</div>
                 </div>
             </div>
         </div>
