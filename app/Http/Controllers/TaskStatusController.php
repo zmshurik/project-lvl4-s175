@@ -8,6 +8,8 @@ use PHPUnit\Framework\Exception;
 
 class TaskStatusController extends Controller
 {
+    const NEW_STATUS_ID = 1;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -52,7 +54,7 @@ class TaskStatusController extends Controller
         } catch (Exception $e) {
             return redirect()->withStatus(404);
         }
-        if ($id == 1) {
+        if ($id == self::NEW_STATUS_ID) {
             flash("You can't edit this status")->error()->important();
             return redirect()->back();
         }
@@ -76,7 +78,7 @@ class TaskStatusController extends Controller
         } catch (Exception $e) {
             return redirect()->withStatus(404);
         }
-        if ($id == 1) {
+        if ($id == self::NEW_STATUS_ID) {
             flash("You can't edit this status")->error()->important();
         } else {
             $status->name = $request->statusName;
@@ -99,11 +101,11 @@ class TaskStatusController extends Controller
         } catch (Exception $e) {
             return redirect()->withStatus(404);
         }
-        if ($id == 1) {
+        if ($id == self::NEW_STATUS_ID) {
             flash("You can't delete this status")->error()->important();
         } else {
             $status->delete();
-            flash("Task status deleted successfuly")->warning()->important();
+            flash("Task status deleted successfuly")->success()->important();
         }
         return redirect()->back();
     }
