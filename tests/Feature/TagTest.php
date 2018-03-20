@@ -49,4 +49,21 @@ class TagTest extends TestCase
         $response->assertStatus(302);
         $this->assertCount(2, Task::first()->tags);
     }
+
+    public function testShouldNotCreateEmptyTag()
+    {
+        $user = factory(\App\User::class)->create();
+        $url = route('tasks.store');
+        $response = $this->actingAs($user)->post($url, [
+            'name' => 'newTask',
+            'assignedToId' => $user->id,
+            'tagsStr' => 'new, main, ,'
+        ]);
+        $response = $this->actingAs($user)->post($url, [
+            'name' => 'oneMoreTask',
+            'assignedToId' => $user->id
+        ]);
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('tags', ['name' => '']);
+    }
 }
