@@ -16,7 +16,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Name</span>
                             </div>
-                            <input type="text" class="form-control{{ $errors->has('statusName') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
+                            <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -31,7 +31,7 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="AssignTo">Assign to</label>
                             </div>
-                            <select class="custom-select" id="AssignTo" name="AssignedTo">
+                            <select class="custom-select" id="AssignTo" name="assignedToId">
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ $user->id == Auth::id() ? 'selected' : '' }}>{{ $user->name }}</option>
                                 @endforeach

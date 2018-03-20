@@ -10,6 +10,7 @@
                 <div class="card-header">Edit task</div>
 
                 <div class="card-body">
+                    <div class="text-center">@include('flash::message')</div>
                     <form action="{{ route('tasks.update', ['id' => $task->id]) }}" method="post">
                     @csrf
                     @method('PATCH')
@@ -17,7 +18,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Name</span>
                             </div>
-                            <input type="text" class="form-control{{ $errors->has('statusName') ? ' is-invalid' : '' }}" name="name" value="{{ $task->name }}" required>
+                            <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $task->name }}" required>
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -38,17 +39,25 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="AssignTo">Assigned to</label>
                             </div>
-                            <select class="custom-select" id="AssignTo" name="AssignedTo">
+                            <select class="custom-select{{ $task->assignedTo->trashed() ? ' is-invalid' : '' }}" id="AssignTo" name="assignedToId">
+                                @if($task->assignedTo->trashed())
+                                    <option value="{{ $task->assignedTo->id }}" selected>{{ $task->assignedTo->name }}</option>
+                                @endif
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ $user->id == $task->assignedTo->id ? 'selected' : '' }}>{{ $user->name }}</option>
                                 @endforeach
-                          </select>
+                            </select>
+                            @if($task->assignedTo->trashed())
+                                <span class="invalid-feedback">
+                                    <strong>This user deleted. Please choose another one!</strong>
+                                </span>
+                            @endif
                         </div>
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="Status">Status</label>
                             </div>
-                            <select class="custom-select" id="Status" name="status">
+                            <select class="custom-select" id="Status" name="statusId">
                                 @foreach($statuses as $status)
                                     <option value="{{ $status->id }}" {{ $status->id == $task->status->id ? 'selected' : '' }}>{{ $status->name }}</option>
                                 @endforeach

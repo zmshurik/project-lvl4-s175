@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Task;
 use App\User;
 use App\TaskStatus;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -43,7 +44,18 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:60'
+        ]);
+        $task = new Task();
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->status()->associate(TaskStatus::find(TaskStatusController::NEW_STATUS_ID));
+        $task->creator()->associate(Auth::user());
+        $task->assignedTo()->associate(User::find($request->assignedToId));
+        $task->save();
+        flash('Task created successfuly')->success()->important();
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -71,7 +83,26 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:60'
+        ]);
+        $assignedUser = User::withTrashed()->find($request->assignedToId);
+        if ($assignedUser->trashed()) {
+            flash('User, on which assigned task, deleted. Please choose another one!')->error();
+        } else {
+            try {
+                $task = Task::findOrFail($id);
+            } catch (Exception $e) {
+                return redirect()->withStatus(404);
+            }
+            $task->name = $request->name;
+            $task->description = $request->description;
+            $task->status()->associate(TaskStatus::find($request->statusId));
+            $task->assignedTo()->associate($assignedUser);
+            $task->save();
+            flash('Task changed successfuly')->success()->important();
+        }
+        return redirect()->back();
     }
 
     /**
@@ -82,6 +113,13 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $task = Task::findOrFail($id);
+        } catch (Exception $e) {
+            return redirect()->withStatus(404);
+        }
+        $task->delete();
+        flash('Task deleted successfuly')->success()->important();
+        return redirect()->route('tasks.index');
     }
 }
