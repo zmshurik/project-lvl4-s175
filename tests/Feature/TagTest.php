@@ -54,7 +54,7 @@ class TagTest extends TestCase
     {
         $user = factory(\App\User::class)->create();
         $url = route('tasks.store');
-        $response = $this->actingAs($user)->post($url, [
+        $this->actingAs($user)->post($url, [
             'name' => 'newTask',
             'assignedToId' => $user->id,
             'tagsStr' => 'new, main, ,'
@@ -65,5 +65,27 @@ class TagTest extends TestCase
         ]);
         $response->assertStatus(302);
         $this->assertDatabaseMissing('tags', ['name' => '']);
+    }
+
+    public function testShouldNotCreateTooLongTag()
+    {
+        $user = factory(\App\User::class)->create();
+        $task = factory(\App\Task::class)->create();
+        $url = route('tasks.store');
+        $longTag = str_repeat('s', 16);
+        $responseStore = $this->actingAs($user)->post($url, [
+            'name' => 'newTask',
+            'assignedToId' => $user->id,
+            'tagsStr' => "tag1, tag2, $longTag"
+        ]);
+        $responseStore->assertStatus(302);
+        $url = route('tasks.update', ['id'=>$task->id]);
+        $responseUpdate = $this->actingAs($user)->patch($url, [
+            'name' => 'newTask',
+            'assignedToId' => $user->id,
+            'tagsStr' => "tag1, tag2, $longTag"
+        ]);
+        $responseUpdate->assertStatus(302);
+        $this->assertDatabaseMissing('tags', ['name' => $longTag]);
     }
 }

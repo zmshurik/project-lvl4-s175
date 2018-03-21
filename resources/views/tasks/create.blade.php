@@ -10,6 +10,7 @@
                 <div class="card-header">Create new task</div>
 
                 <div class="card-body">
+                <div class="text-center">@include('flash::message')</div>
                     <form action="{{ route('tasks.store') }}" method="post">
                     @csrf
                         <div class="input-group mb-1">

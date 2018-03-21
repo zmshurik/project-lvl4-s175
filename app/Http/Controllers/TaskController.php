@@ -8,6 +8,7 @@ use App\User;
 use App\TaskStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Tag;
+use App\Exceptions\TooLongTagNameException;
 
 class TaskController extends Controller
 {
@@ -24,14 +25,21 @@ class TaskController extends Controller
     private function getTagsIdsFromStr($tagsStr)
     {
         $tagNames = collect(explode(',', $tagsStr));
-        return $tagNames->map(function ($tag, $key) {
-            $trimed = trim($tag);
-            return Tag::firstOrCreate(['name' => $trimed])->id;
-        })->unique()->all();
+        return $tagNames->map(function ($item, $key) {
+            $tagName = trim($item);
+            if (strlen($tagName) > 15) {
+                throw new TooLongTagNameException("$tagName is too long. Max length is 15 characters");
+            }
+            return $tagName;
+        })->unique()->reject(function ($name) {
+            return empty($name);
+        })->map(function ($tagName, $key) {
+            return Tag::firstOrCreate(['name' => $tagName])->id;
+        })->toArray();
     }
 
     /**
-     * Return return parameter of empty string if parameter is null
+     * Return return parameter or empty string if parameter is null
      *
      * @param  string  $tagsStr
      * @return string
@@ -75,7 +83,12 @@ class TaskController extends Controller
             'name' => 'required|max:60'
         ]);
         $tagsStr = $this->getValidTagsStr($request->tagsStr);
-        $tagsIds = $this->getTagsIdsFromStr($tagsStr);
+        try {
+            $tagsIds = $this->getTagsIdsFromStr($tagsStr);
+        } catch (TooLongTagNameException $e) {
+            flash($e->getMessage())->error()->important();
+            return back();
+        }
         $task = new Task();
         $task->name = $request->name;
         $task->description = $request->description;
@@ -113,12 +126,15 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:60'
-        ]);
+        $request->validate(['name' => 'required|max:60']);
         $assignedUser = User::withTrashed()->find($request->assignedToId);
         $tagsStr = $this->getValidTagsStr($request->tagsStr);
-        $tagsIds = $this->getTagsIdsFromStr($tagsStr);
+        try {
+            $tagsIds = $this->getTagsIdsFromStr($tagsStr);
+        } catch (TooLongTagNameException $e) {
+            flash($e->getMessage())->error()->important();
+            return back();
+        }
         if ($assignedUser->trashed()) {
             flash('User, on which assigned task, deleted. Please choose another one!')->error();
         } else {
