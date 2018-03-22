@@ -34,7 +34,7 @@ class TaskController extends Controller
         })->unique()->reject(function ($name) {
             return empty($name);
         })->map(function ($tagName, $key) {
-            return Tag::firstOrCreate(['name' => $tagName])->id;
+            return Tag::firstOrCreate(['name' => strtolower($tagName)])->id;
         })->toArray();
     }
 

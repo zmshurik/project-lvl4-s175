@@ -22,7 +22,7 @@ class TagTest extends TestCase
         $response = $this->actingAs($user)->post($url, [
             'name' => 'newTask',
             'assignedToId' => $user->id,
-            'tagsStr' => 'new, main, important'
+            'tagsStr' => 'New, Main, impoRtant'
         ]);
         $response->assertStatus(302);
         $this->assertDatabaseHas('tags', ['name' => 'new']);
