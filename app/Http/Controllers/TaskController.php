@@ -57,7 +57,15 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::paginate(10);
-        return view('tasks.index', ['tasks' => $tasks]);
+        $users = User::has('AssignedTasks')->get();
+        $tags = Tag::has('tasks')->get();
+        $statuses = TaskStatus::has('tasks')->get();
+        return view('tasks.index', [
+            'tasks' => $tasks,
+            'users' => $users,
+            'tags' => $tags,
+            'statuses' => $statuses
+        ]);
     }
 
     /**
