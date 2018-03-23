@@ -39,7 +39,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
-        if ($user->id != User::find($id)->id) {
+        if ($user->id != $id) {
             return redirect()->route('users.edit', ['id' => $user->id]);
         }
         return view('users.profile', ['user' => $user]);
