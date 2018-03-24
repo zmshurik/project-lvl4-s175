@@ -8,7 +8,6 @@ use App\User;
 use App\TaskStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Tag;
-use App\Exceptions\TooLongTagNameException;
 use App\Rules\TagNameLength;
 
 class TaskController extends Controller
