@@ -33,7 +33,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Tags</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="please enter tags devided by ','" name="tagsStr" value="{{ $task->tags->pluck('name')->implode(', ') }}">
+                            <input type="text" class="form-control{{ $errors->has('tagsStr') ? ' is-invalid' : '' }}" placeholder="please enter tags devided by ','"
+                                 name="tagsStr" value="{{ $task->tags->pluck('name')->implode(', ') }}" value="{{ old('tagsStr') }}">
+                            @if ($errors->has('tagsStr'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('tagsStr') }}</strong>
+                                </span>
+                            @endif
                         </div>
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">

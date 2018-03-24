@@ -9,6 +9,7 @@ use App\TaskStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Tag;
 use App\Exceptions\TooLongTagNameException;
+use App\Rules\TagNameLength;
 
 class TaskController extends Controller
 {
@@ -27,9 +28,6 @@ class TaskController extends Controller
         $tagNames = collect(explode(',', $tagsStr));
         return $tagNames->map(function ($item, $key) {
             $tagName = trim($item);
-            if (strlen($tagName) > 15) {
-                throw new TooLongTagNameException("$tagName is too long. Max length is 15 characters");
-            }
             return $tagName;
         })->unique()->reject(function ($name) {
             return empty($name);
@@ -88,15 +86,11 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:60'
+            'name' => 'required|max:60',
+            'tagsStr' => [new TagNameLength]
         ]);
         $tagsStr = $this->getValidTagsStr($request->tagsStr);
-        try {
-            $tagsIds = $this->getTagsIdsFromStr($tagsStr);
-        } catch (TooLongTagNameException $e) {
-            flash($e->getMessage())->error()->important();
-            return back();
-        }
+        $tagsIds = $this->getTagsIdsFromStr($tagsStr);
         $task = new Task();
         $task->name = $request->name;
         $task->description = $request->description;
@@ -130,15 +124,13 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate(['name' => 'required|max:60']);
+        $request->validate([
+            'name' => 'required|max:60',
+            'tagsStr' => [new TagNameLength]
+        ]);
         $assignedUser = User::withTrashed()->find($request->assignedToId);
         $tagsStr = $this->getValidTagsStr($request->tagsStr);
-        try {
-            $tagsIds = $this->getTagsIdsFromStr($tagsStr);
-        } catch (TooLongTagNameException $e) {
-            flash($e->getMessage())->error()->important();
-            return back();
-        }
+        $tagsIds = $this->getTagsIdsFromStr($tagsStr);
         if ($assignedUser->trashed()) {
             flash('User, on which assigned task, deleted. Please choose another one!')->error();
         } else {
