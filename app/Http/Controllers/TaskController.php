@@ -117,11 +117,7 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        try {
-            $task = Task::findOrFail($id);
-        } catch (Exception $e) {
-            return redirect()->withStatus(404);
-        }
+        $task = Task::findOrFail($id);
         return view('tasks.edit', ['task' => $task, 'users' => User::all(), 'statuses' => TaskStatus::all()]);
     }
 
@@ -146,11 +142,7 @@ class TaskController extends Controller
         if ($assignedUser->trashed()) {
             flash('User, on which assigned task, deleted. Please choose another one!')->error();
         } else {
-            try {
-                $task = Task::findOrFail($id);
-            } catch (Exception $e) {
-                return redirect()->withStatus(404);
-            }
+            $task = Task::findOrFail($id);
             $task->name = $request->name;
             $task->description = $request->description;
             $task->status()->associate(TaskStatus::find($request->statusId));
@@ -170,11 +162,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $task = Task::findOrFail($id);
-        } catch (Exception $e) {
-            return redirect()->withStatus(404);
-        }
+        $task = Task::findOrFail($id);
         $task->tags()->detach();
         $task->delete();
         flash('Task deleted successfuly')->success()->important();

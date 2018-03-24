@@ -49,11 +49,7 @@ class TaskStatusController extends Controller
      */
     public function edit($id)
     {
-        try {
-            $status = TaskStatus::findOrFail($id);
-        } catch (Exception $e) {
-            return redirect()->withStatus(404);
-        }
+        $status = TaskStatus::findOrFail($id);
         if ($id == self::NEW_STATUS_ID) {
             flash("You can't edit this status")->error()->important();
             return redirect()->back();
@@ -73,11 +69,7 @@ class TaskStatusController extends Controller
         $request->validate([
             'statusName' => 'required|string|max:50|unique:task_statuses,name'
         ]);
-        try {
-            $status = TaskStatus::findOrFail($id);
-        } catch (Exception $e) {
-            return redirect()->withStatus(404);
-        }
+        $status = TaskStatus::findOrFail($id);
         if ($id == self::NEW_STATUS_ID) {
             flash("You can't edit this status")->error()->important();
         } else {
@@ -96,11 +88,7 @@ class TaskStatusController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $status = TaskStatus::findOrFail($id);
-        } catch (Exception $e) {
-            return redirect()->withStatus(404);
-        }
+        $status = TaskStatus::findOrFail($id);
         if ($id == self::NEW_STATUS_ID || $status->tasks->isNotEmpty()) {
             flash("You can't delete this status")->error()->important();
             flash("This status has tasks. Plese change all of it before delete.")->warning()->important();
