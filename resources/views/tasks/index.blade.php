@@ -10,8 +10,7 @@
                 <div class="card-header">Tasks</div>
 
                 <div class="card-body">
-                    <form class="mb-2" action="{{ route('filter.store') }}" method="post">
-                    @csrf
+                    <form class="mb-2" action="{{ route('tasks.index') }}" method="GET">                   
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label>Status</label>
@@ -49,11 +48,12 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-3 d-flex justify-content-around">
-                                <button type="submit" class="btn btn-outline-success">Apply filter</button>
-                                <a class="btn btn-outline-success" href="{{ route('tasks.index') }}">Reset</a>
+                                <button type="submit" class="btn btn-outline-success">Search</button>
+                                <a class="btn btn-outline-success" href="{{ route('tasks.index') }}">Show all</a>
                             </div>
                         </div>
                     </form>
+                    <p>{{ var_dump(1) }}</p>
                     <div class="text-center">@include('flash::message')</div>
                     <a class="btn btn-light mb-1" href="{{ route('tasks.create') }}">Create new task</a>
                     <table class="table table-bordered table-sm">

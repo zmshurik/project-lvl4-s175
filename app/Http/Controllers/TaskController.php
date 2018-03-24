@@ -9,6 +9,7 @@ use App\TaskStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Tag;
 use App\Rules\TagNameLength;
+use Illuminate\Support\Facades\Input;
 
 class TaskController extends Controller
 {
@@ -53,10 +54,15 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::paginate(10);
+        $tasks = Task::with(['tags', 'creator', 'assignedTo'])->createdByAuthUser(Input::get('isMyTask'))->
+            withStatus(Input::get('statusId'))->assignedToUser(Input::get('assignedToId'))->
+            withTag(Input::get('tagId'))->paginate(10);
         $users = User::has('AssignedTasks')->get();
         $tags = Tag::has('tasks')->get();
         $statuses = TaskStatus::has('tasks')->get();
+        if ($tasks->isEmpty()) {
+            flash('No records found')->warning()->important();
+        }
         return view('tasks.index', [
             'tasks' => $tasks,
             'users' => $users,

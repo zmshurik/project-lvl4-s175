@@ -35,9 +35,3 @@ Route::resource('taskStatuses', 'TaskStatusController', ['except' => [
 ]]);
 
 Route::resource('tasks', 'TaskController', ['except' => ['show']]);
-
-Route::prefix('tasks')->group(function () {
-    Route::resource('filter', 'FilterController', ['only' => [
-        'store'
-    ]]);
-});
