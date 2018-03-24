@@ -10,32 +10,36 @@
                 <div class="card-header">Tasks</div>
 
                 <div class="card-body">
-                    <form class="mb-2" action="{{ route('tasks.index') }}" method="GET">                   
+                    <form class="mb-2" action="{{ route('tasks.index') }}" method="GET">
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label>Status</label>
                                 <select class="custom-select" name="statusId">
-                                    <option value="" selected>Choose...</option>
+                                    <option value="" {{ Request::get('statusId') ? '' : 'selected' }}>All</option>
                                     @foreach ($statuses as $status)
-                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                        <option value="{{ $status->id }}" {{ Request::get('statusId') == $status->id ? 'selected' : '' }}>
+                                            {{ $status->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-5">
                                 <label>Assigned user</label>
                                 <select class="custom-select" name="assignedToId">
-                                    <option value="" selected>Choose...</option>
+                                    <option value="" {{ Request::get('assignedToId') ? '' : 'selected' }}>All</option>
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ Request::get('assignedToId') == $user->id ? 'selected' : '' }}>
+                                            {{ $user->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-2">
                                 <label>Tag</label>
                                 <select class="custom-select" name="tagId">
-                                    <option value="" selected>Choose...</option>
+                                    <option value="" {{ Request::get('tagId') ? '' : 'selected' }}>All</option>
                                     @foreach ($tags as $tag)
-                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                        <option value="{{ $tag->id }}" {{ Request::get('tagId') == $tag->id ? 'selected' : '' }}>{{ $tag->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -43,7 +47,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-9">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="isMyTask">
+                                    <input class="form-check-input" type="checkbox" name="isMyTask" {{ Request::get('isMyTask') ? 'checked' : '' }}>
                                     <label class="form-check-label">Created by me</label>
                                 </div>
                             </div>
@@ -53,7 +57,6 @@
                             </div>
                         </div>
                     </form>
-                    <p>{{ var_dump(1) }}</p>
                     <div class="text-center">@include('flash::message')</div>
                     <a class="btn btn-light mb-1" href="{{ route('tasks.create') }}">Create new task</a>
                     <table class="table table-bordered table-sm">
