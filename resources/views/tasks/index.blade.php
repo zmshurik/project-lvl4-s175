@@ -67,7 +67,7 @@
                                 <th scope="col">Assigned to</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Tags</th>
-                                <th class="col-md-1" scope="col">Actions</th>
+                                <th scope="col"  style="width: 5%;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
